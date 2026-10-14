@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Primera Comunión - Camila</title>
+<meta name="description" content="Invitación a mi Primera Comunión - Domingo 13 de diciembre de 2026">
+<meta property="og:title" content="Mi Primera Comunión">
+<meta property="og:description" content="Domingo 13 de diciembre de 2026. ¡Te espero!">
+<meta property="og:image" content="https://invitationforyou.github.io/Invitaciones/camila/img/00.jpg.jpeg">
+<meta property="og:url" content="https://invitationforyou.github.io/Invitaciones/camila/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --acento: #8aa6d4;
+    --acento-osc: #5a7db1;
+    --dorado: #b99a6b;
+    --azul: #93a8d3;
+    --tinta: #1d1d1d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #e9eef8;
+    background-image: radial-gradient(circle at 20% 10%, #f6f8fc 0, transparent 40%),
+                      radial-gradient(circle at 80% 90%, #e3eaf7 0, transparent 45%);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--tinta);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .invitacion {
+    max-width: 540px;
+    margin: 0 auto;
+    box-shadow: 0 0 40px rgba(60, 70, 110, .18);
+    background: #fff;
+  }
+
+  /* Cada página es la imagen del diseño + capas posicionadas en % */
+  .pagina {
+    position: relative;
+    container-type: inline-size;
+    line-height: 0;
+  }
+
+  .pagina > img {
+    width: 100%;
+    height: auto;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .capa {
+    position: absolute;
+    line-height: normal;
+  }
+
+  /* Aparición suave al hacer scroll */
+  .revelar { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform .9s ease; }
+  .revelar.visible { opacity: 1; transform: none; }
+
+  /* ========== 01 · Reproductor ========== */
+  .reproductor {
+    /* recuadro azul de la imagen 01 (1181 x 948) */
+    left: 17.2%;
+    top: 59.8%;
+    width: 65.8%;
+    height: 16.2%;
+    display: flex;
+    align-items: center;
+    gap: 3.5cqw;
+    padding: 0 3.5cqw;
+  }
+
+  .btn-play {
+    flex: none;
+    width: 10cqw;
+    height: 10cqw;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(145deg, #a9c0e4, var(--acento-osc));
+    box-shadow: 0 .6cqw 1.6cqw rgba(90, 125, 177, .45), inset 0 .3cqw .5cqw rgba(255,255,255,.45);
+    display: grid;
+    place-items: center;
+    position: relative;
+    transition: transform .2s ease;
+  }
+  .btn-play:hover { transform: scale(1.06); }
+  .btn-play:active { transform: scale(.95); }
+  .btn-play svg { width: 42%; height: 42%; fill: #fff; }
+  .btn-play .i-pausa { display: none; }
+  .sonando .btn-play .i-play { display: none; }
+  .sonando .btn-play .i-pausa { display: block; }
+
+  /* anillo que late para invitar a tocar */
+  .btn-play::after {
+    content: "";
+    position: absolute;
+    inset: -1cqw;
+    border-radius: 50%;
+    border: .35cqw solid var(--acento);
+    animation: latido 1.8s ease-out infinite;
+  }
+  .sonando .btn-play::after { animation: none; opacity: 0; }
+
+  @keyframes latido {
+    0% { transform: scale(.9); opacity: .9; }
+    100% { transform: scale(1.35); opacity: 0; }
+  }
+
+  .info-cancion { flex: 1; min-width: 0; }
+
+  .titulo-cancion {
+    font-size: 3.6cqw;
+    font-style: italic;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #2c3a52;
+  }
+
+  .barra {
+    margin-top: 1.4cqw;
+    height: 1cqw;
+    border-radius: 1cqw;
+    background: rgba(90, 125, 177, .22);
+    cursor: pointer;
+    position: relative;
+  }
+  .barra-relleno {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #a9c0e4, var(--acento-osc));
+  }
+
+  .tiempos {
+    display: flex;
+    justify-content: space-between;
+    margin-top: .8cqw;
+    font-size: 2.6cqw;
+    color: #5f7393;
+  }
+
+  /* ondas animadas mientras suena */
+  .ondas { display: flex; gap: .6cqw; align-items: flex-end; height: 4cqw; flex: none; }
+  .ondas span {
+    width: .7cqw;
+    height: 30%;
+    background: var(--acento-osc);
+    border-radius: 1cqw;
+  }
+  .sonando .ondas span { animation: onda 1s ease-in-out infinite; }
+  .ondas span:nth-child(2) { animation-delay: .2s !important; }
+  .ondas span:nth-child(3) { animation-delay: .4s !important; }
+  .ondas span:nth-child(4) { animation-delay: .1s !important; }
+  @keyframes onda { 0%,100% { height: 25%; } 50% { height: 100%; } }
+
+  /* ========== 03 · Contador ========== */
+  .contador {
+    /* fila sobre "Días Horas Minutos Segundos" (1181 x 1772) */
+    left: 2.5%;
+    top: 85.6%;
+    width: 95%;
+    height: 7%;
+  }
+  .contador .num {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    font-size: 11cqw;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--tinta);
+    font-variant-numeric: lining-nums tabular-nums;
+    text-shadow: 0 0 1.2cqw rgba(255,255,255,.9);
+  }
+  /* centros de cada etiqueta en la imagen, relativos a la capa */
+  .contador .n-dias     { left: 8.3%; }
+  .contador .n-horas    { left: 30%; }
+  .contador .n-minutos  { left: 55.9%; }
+  .contador .n-segundos { left: 84.8%; }
+
+  .contador .num.tic { animation: tic .35s ease; }
+  @keyframes tic { 0% { transform: translateX(-50%) scale(1.12); } 100% { transform: translateX(-50%) scale(1); } }
+
+  /* ========== Botones invisibles (05 y 06) ========== */
+  .zona-clic {
+    display: block;
+    cursor: pointer;
+    border-radius: 1.2cqw;
+    transition: background-color .2s ease, box-shadow .2s ease;
+  }
+  .zona-clic:hover, .zona-clic:focus-visible {
+    background: rgba(255, 255, 255, .18);
+    box-shadow: 0 0 2.4cqw rgba(185, 154, 107, .55);
+    outline: none;
+  }
+  .zona-clic:active { background: rgba(185, 154, 107, .18); }
+
+  .mapa-parroquia { left: 30.4%; top: 42.4%; width: 39.3%; height: 8.8%; }
+  .mapa-salon     { left: 30.4%; top: 80.3%; width: 39.3%; height: 8.8%; }
+
+  .whatsapp       { left: 15.4%; top: 53.3%; width: 70.6%; height: 10.6%; border-radius: 10cqw; }
+
+  /* ========== Botón flotante de música ========== */
+  .musica-flotante {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background: linear-gradient(145deg, #a9c0e4, var(--acento-osc));
+    box-shadow: 0 6px 18px rgba(90, 125, 177, .5);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(.6);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .musica-flotante.mostrar { opacity: 1; pointer-events: auto; transform: scale(1); }
+  .musica-flotante svg { width: 24px; height: 24px; fill: #fff; }
+  .musica-flotante .i-pausa { display: none; }
+  .sonando .musica-flotante .i-play { display: none; }
+  .sonando .musica-flotante .i-pausa { display: block; }
+  .sonando .musica-flotante { animation: girar 6s linear infinite; }
+  @keyframes girar { to { rotate: 360deg; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .revelar { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<main class="invitacion" id="invitacion">
+
+  <section class="pagina">
+    <img src="img/00.jpg.jpeg" alt="Mi Primera Comunión - Camila">
+  </section>
+
+  <!-- 01 · Canción -->
+  <section class="pagina">
+    <img src="img/01.jpg.jpeg" alt="Dale play a mi canción y déjate llevar por esta melodía">
+    <div class="capa reproductor">
+      <button class="btn-play" id="btnPlay" aria-label="Reproducir canción">
+        <svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+        <svg class="i-pausa" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg>
+      </button>
+      <div class="info-cancion">
+        <div class="titulo-cancion">Ángeles de Dios</div>
+        <div class="barra" id="barra"><div class="barra-relleno" id="relleno"></div></div>
+        <div class="tiempos"><span id="tActual">0:00</span><span id="tTotal">0:00</span></div>
+      </div>
+      <div class="ondas" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    </div>
+  </section>
+
+  <section class="pagina revelar">
+    <img src="img/02.jpg.jpeg" alt="Hoy Jesús llega a mi corazón para llenarlo de amor">
+  </section>
+
+  <!-- 03 · Contador -->
+  <section class="pagina revelar">
+    <img src="img/03-.jpg.jpeg" alt="Solo faltan">
+    <div class="capa contador" aria-live="polite">
+      <span class="num n-dias" id="cDias">00</span>
+      <span class="num n-horas" id="cHoras">00</span>
+      <span class="num n-minutos" id="cMinutos">00</span>
+      <span class="num n-segundos" id="cSegundos">00</span>
+    </div>
+  </section>
+
+  <section class="pagina revelar">
+    <img src="img/04.jpg.jpeg" alt="¿Cuándo y dónde? Domingo 13 de diciembre de 2026">
+  </section>
+
+  <!-- 05 · Ubicaciones -->
+  <section class="pagina revelar">
+    <img src="img/05.jpg.jpeg" alt="Parroquia San Cayetano 10am, Recepción 3pm">
+    <a class="capa zona-clic mapa-parroquia" href="https://maps.app.goo.gl/ztDxTNsisZahZD7K6" target="_blank" rel="noopener" aria-label="Ir al mapa de la Parroquia San Cayetano"></a>
+    <a class="capa zona-clic mapa-salon" href="https://www.google.com/maps/place/Conjunto+Residencial+Madera+Nativa/@6.3139445,-75.5533949,17z/data=!3m1!4b1!4m6!3m5!1s0x8e442f14b43ce2d9:0x2c1dcb8a7d73f690!8m2!3d6.3139392!4d-75.55082!16s%2Fg%2F11c20bxf5v?entry=ttu&amp;g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" aria-label="Ir al mapa de la recepción"></a>
+  </section>
+
+  <!-- 06 · Confirmar asistencia -->
+  <section class="pagina revelar">
+    <img src="img/06.jpg.jpeg" alt="Confirmar asistencia y lluvia de sobres">
+    <a class="capa zona-clic whatsapp" id="btnWhatsapp" href="#" target="_blank" rel="noopener" aria-label="Confirmar asistencia por WhatsApp"></a>
+  </section>
+
+  <section class="pagina revelar">
+    <img src="img/07.jpg.jpeg" alt="Gracias por acompañarme">
+  </section>
+
+</main>
+
+<button class="musica-flotante" id="btnFlotante" aria-label="Pausar o reanudar música">
+  <svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+  <svg class="i-pausa" viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
+</button>
+
+<audio id="cancion" src="audio/cancion.mp3" preload="metadata" loop></audio>
+
+<script>
+  // ---------- Música ----------
+  const audio = document.getElementById('cancion');
+  const btnPlay = document.getElementById('btnPlay');
+  const btnFlotante = document.getElementById('btnFlotante');
+  const barra = document.getElementById('barra');
+  const relleno = document.getElementById('relleno');
+  const tActual = document.getElementById('tActual');
+  const tTotal = document.getElementById('tTotal');
+
+  const fmt = s => isFinite(s) ? Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0') : '0:00';
+
+  function alternar() {
+    audio.paused ? audio.play() : audio.pause();
+  }
+  btnPlay.addEventListener('click', alternar);
+  btnFlotante.addEventListener('click', alternar);
+
+  audio.addEventListener('play', () => {
+    document.body.classList.add('sonando');
+    btnFlotante.classList.add('mostrar');
+    btnPlay.setAttribute('aria-label', 'Pausar canción');
+  });
+  audio.addEventListener('pause', () => {
+    document.body.classList.remove('sonando');
+    btnPlay.setAttribute('aria-label', 'Reproducir canción');
+  });
+  audio.addEventListener('loadedmetadata', () => { tTotal.textContent = fmt(audio.duration); });
+  audio.addEventListener('timeupdate', () => {
+    tActual.textContent = fmt(audio.currentTime);
+    if (audio.duration) relleno.style.width = (audio.currentTime / audio.duration * 100) + '%';
+  });
+  barra.addEventListener('click', e => {
+    if (!audio.duration) return;
+    const r = barra.getBoundingClientRect();
+    audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
+  });
+
+  // ---------- Contador: domingo 13 de diciembre de 2026, 10:00 a.m. (hora Colombia) ----------
+  const evento = new Date('2026-12-13T10:00:00-05:00').getTime();
+  const campos = {
+    dias: document.getElementById('cDias'),
+    horas: document.getElementById('cHoras'),
+    minutos: document.getElementById('cMinutos'),
+    segundos: document.getElementById('cSegundos')
+  };
+
+  function poner(el, valor) {
+    const txt = String(valor).padStart(2, '0');
+    if (el.textContent !== txt) {
+      el.textContent = txt;
+      el.classList.remove('tic');
+      void el.offsetWidth;
+      el.classList.add('tic');
+    }
+  }
+
+  function actualizar() {
+    let resta = Math.max(0, evento - Date.now()) / 1000;
+    const d = Math.floor(resta / 86400); resta -= d * 86400;
+    const h = Math.floor(resta / 3600);  resta -= h * 3600;
+    const m = Math.floor(resta / 60);
+    const s = Math.floor(resta - m * 60);
+    poner(campos.dias, d);
+    poner(campos.horas, h);
+    poner(campos.minutos, m);
+    poner(campos.segundos, s);
+  }
+  actualizar();
+  setInterval(actualizar, 1000);
+
+  // ---------- WhatsApp ----------
+  const mensaje = 'He recibido tu invitación y confirmo mi asistencia. Espero con ilusión compartir contigo una tarde llena de magia, sonrisas y recuerdos inolvidables. ✨😇';
+  document.getElementById('btnWhatsapp').href =
+    'https://wa.me/573126871924?text=' + encodeURIComponent(mensaje);
+
+  // ---------- Aparición al hacer scroll ----------
+  const obs = new IntersectionObserver(entradas => {
+    entradas.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.revelar').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
